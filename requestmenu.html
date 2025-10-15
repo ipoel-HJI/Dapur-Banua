@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Konsumen - Request Menu Makanan</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+  <div class="container mt-5">
+    <h2 class="text-center mb-4 text-primary"><i class="fas fa-utensils"></i> Request Menu Makanan</h2>
+	<div class="col-12 text-end">
+	</div>
+    <div class="card shadow-sm">
+      <div class="card-body">
+        <form id="requestForm" class="row g-3">
+			<div class="col-md-2">
+            <select id="reqwaktuMakan" class="form-select" required>
+              <option value="">Pilih Waktu</option>
+              <option value="Pagi">Pagi</option>
+              <option value="Siang">Siang</option>
+              <option value="Malam">Malam</option>
+            </select>
+			</div>
+			<hr />
+          <div class="col-md-6">
+            <label class="form-label">Jenis Nasi</label>
+            <input type="text" id="reqNasi" class="form-control" placeholder="Contoh: Nasi Putih" required>
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">Lauk</label>
+            <input type="text" id="reqLauk" class="form-control" placeholder="Contoh: Ayam Goreng" required>
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">Lauk Tambahan</label>
+            <input type="text" id="reqTambahan" class="form-control" placeholder="Contoh: Tempe Goreng">
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">Sayur</label>
+            <input type="text" id="reqSayur" class="form-control" placeholder="Contoh: Sayur Sop">
+          </div>
+          <div class="col-12 text-end">
+            <button type="submit" class="btn btn-primary"><i class="fas fa-paper-plane"></i> Kirim Request</button>
+          </div>
+        </form>
+      </div>
+    </div>
+	
+		<hr />
+	<button class="btn btn-success w-100" onclick="window.location.href='konsumen.html'">Kembali</button>
+	<hr />
+	
+  </div>
+
+  <script>
+  function getLocal(key){ return JSON.parse(localStorage.getItem(key)) || []; }
+  function setLocal(key,data){ localStorage.setItem(key, JSON.stringify(data)); }
+
+  document.getElementById('requestForm').addEventListener('submit', e => {
+    e.preventDefault();
+    const waktuMakan = document.getElementById('reqwaktuMakan').value.trim();
+    const nasi = document.getElementById('reqNasi').value.trim();
+    const lauk = document.getElementById('reqLauk').value.trim();
+    const tambahan = document.getElementById('reqTambahan').value.trim();
+    const sayur = document.getElementById('reqSayur').value.trim();
+
+    const newReq = {
+      tanggal: new Date().toISOString().split('T')[0],
+      waktuMakan,
+      nasi,
+      lauk,
+      tambahan,
+      sayur,
+      waktu: new Date().toLocaleString("id-ID"),
+      status: "pending"
+    };
+
+    const data = getLocal("requestMenuList");
+    data.unshift(newReq);
+    setLocal("requestMenuList", data);
+    alert("Request berhasil dikirim!");
+    document.getElementById("requestForm").reset();
+  });
+</script>
+
+</body>
+</html>

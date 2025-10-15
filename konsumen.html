@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Konsumen - Dapur Banua</title>
+
+  <!-- Bootstrap & Font Awesome -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f8f9fa;
+    }
+    /* Banner (Hero Section) */
+    .hero {
+      background: url('https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=1400&q=80') center/cover no-repeat;
+      color: white;
+      text-align: center;
+      padding: 100px 20px;
+      position: relative;
+    }
+    .hero::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.55);
+    }
+    .hero-content {
+      position: relative;
+      z-index: 2;
+    }
+    .hero h1 {
+      font-size: 3rem;
+      font-weight: 700;
+    }
+    .hero p {
+      font-size: 1.25rem;
+      opacity: 0.9;
+    }
+
+    /* Menu card */
+    .menu-card {
+      max-width: 600px;
+      margin: -60px auto 40px;
+      border-radius: 15px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+      overflow: hidden;
+    }
+
+    .list-group-item strong {
+      color: #dc3545;
+    }
+
+    .meal-time {
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      background: #dc3545;
+      color: white;
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 0.9rem;
+      margin-top: 8px;
+    }
+
+    footer {
+      background: #212529;
+      color: #ccc;
+      padding: 15px;
+      text-align: center;
+      font-size: 0.9rem;
+    }
+	
+	/* Tambahan gaya untuk foto galeri agar lebih elegan */
+.carousel-inner img.d-block.w-100 {
+  width: auto !important;
+  max-width: 100%;
+  max-height: 380px;
+  margin: 0 auto;
+  object-fit: cover;
+  border-radius: 10px;
+  box-shadow: 0 5px 20px rgba(0,0,0,0.25); /* bayangan lembut */
+  border: 3px solid #fff; /* bingkai putih tipis */
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Efek zoom halus saat disentuh atau dihover */
+.carousel-inner img.d-block.w-100:hover {
+  transform: scale(1.03);
+  box-shadow: 0 8px 25px rgba(0,0,0,0.35);
+}
+
+/* Versi mobile: ukuran foto sedikit lebih kecil */
+@media (max-width: 768px) {
+  .carousel-inner img.d-block.w-100 {
+    max-height: 250px;
+  }
+}
+
+.carousel-inner img.d-block.w-100 {
+  width: auto !important;      /* paksa lebar proporsional */
+  max-width: 100%;             /* tetap responsif */
+  max-height: 380px;
+  margin: 0 auto;
+  object-fit: cover;
+  border-radius: 10px;
+}
+@media (max-width: 768px) {
+  .carousel-inner img {
+    max-height: 250px; /* lebih kecil untuk layar ponsel */
+  }
+}
+/* Ukuran foto di carousel agar tidak terlalu besar */
+.carousel-inner img {
+  max-height: 380px;     /* batas tinggi maksimal foto */
+  width: auto;           /* biar tidak dipaksa 100% lebar */
+  margin: 0 auto;        /* tengah */
+  object-fit: cover;     /* potong rapi tanpa distorsi */
+  border-radius: 10px;   /* sudut lembut */
+}
+/* Ukuran foto anggota dapur & waitress */
+.rounded-img {
+  width: 120px;           /* lebar tetap */
+  height: 120px;          /* tinggi tetap */
+  object-fit: cover;      /* potong rapi tanpa distorsi */
+  border-radius: 50%;     /* bentuk bulat */
+  border: 3px solid #fff; /* bingkai putih */
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2); /* bayangan lembut */
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Efek saat hover */
+.rounded-img:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 15px rgba(0,0,0,0.3);
+}
+
+/* Responsif di HP */
+@media (max-width: 768px) {
+  .rounded-img {
+    width: 90px;
+    height: 90px;
+  }
+}
+
+
+  </style>
+</head>
+<body>
+
+  <!-- Banner -->
+  <section class="hero">
+    <div class="hero-content">
+      <h1><i class="fas fa-utensils"></i> Selamat Datang Di Dapur Banua</h1>
+      <p>Selidah Serasa</p>
+    </div>
+  </section>
+  
+  <!-- Menu Hari Ini -->
+  <div class="container">
+    <div class="card menu-card">
+      <div class="card-header bg-danger text-white text-center fs-5 fw-bold">
+        Menu Hari Ini
+      </div>
+      <div class="card-body" id="menuHariIni">
+        <p class="text-center text-muted">Memuat data menu...</p>
+      </div>
+    </div>
+  </div>
+<hr />
+  <div class="container my-5">
+
+    <!-- Foto Menu (carousel, show/hide) -->
+    <section class="mt-5">
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2 class="m-0">Foto Menu</h2>
+        <button class="btn btn-outline-warning btn-sm" data-bs-toggle="collapse" data-bs-target="#fotoMenuSection" aria-expanded="false">
+          <i class="fas fa-images"></i> Tampilkan / Sembunyikan
+        </button>
+      </div>
+      <div id="fotoMenuSection" class="collapse">
+        <div id="fotoMenuCarouselContainer" class="mb-4"></div>
+      </div>
+    </section>
+
+    <hr />
+
+    <!-- Dokumentasi Kegiatan -->
+    <section class="mt-5">
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2 class="m-0">Dokumentasi Kegiatan Dapur & Kantin</h2>
+        <button class="btn btn-outline-info btn-sm" data-bs-toggle="collapse" data-bs-target="#kegiatanSection" aria-expanded="false">
+          <i class="fas fa-camera-retro"></i> Tampilkan / Sembunyikan
+        </button>
+      </div>
+      <div id="kegiatanSection" class="collapse">
+        <div id="kegiatanCarouselContainer" class="mb-4"></div>
+      </div>
+    </section>
+
+    <hr />
+
+    <!-- Sertifikat -->
+    <section class="mt-5">
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2 class="m-0">Sertifikat Dapur</h2>
+        <button class="btn btn-outline-success btn-sm" data-bs-toggle="collapse" data-bs-target="#sertifikatSection" aria-expanded="false">
+          <i class="fas fa-certificate"></i> Tampilkan / Sembunyikan
+        </button>
+      </div>
+      <div id="sertifikatSection" class="collapse">
+        <div id="sertifikatCarouselContainer" class="mb-4"></div>
+      </div>
+    </section>
+
+    <hr />
+
+    <!-- Anggota Dapur -->
+    <section class="mt-5">
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2 class="m-0">Anggota Dapur Dapur Banua</h2>
+        <button class="btn btn-outline-primary btn-sm" data-bs-toggle="collapse" data-bs-target="#anggotaSection" aria-expanded="false">
+          <i class="fas fa-users"></i> Tampilkan / Sembunyikan
+        </button>
+      </div>
+      <div id="anggotaSection" class="collapse">
+        <div class="row justify-content-center" id="anggotaList"></div>
+      </div>
+    </section>
+
+    <hr />
+
+    <!-- Waitress -->
+    <section class="mt-5">
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2 class="m-0">Waitress</h2>
+        <button class="btn btn-outline-secondary btn-sm" data-bs-toggle="collapse" data-bs-target="#waitressSection" aria-expanded="false">
+          <i class="fas fa-user-friends"></i> Tampilkan / Sembunyikan
+        </button>
+      </div>
+      <div id="waitressSection" class="collapse">
+        <div class="row justify-content-center" id="waitressList"></div>
+      </div>
+    </section>
+
+    <hr />
+
+    <!-- Kesan & Keluhan -->
+    <section class="mt-5">
+      <h2 class="mb-4 text-center">Kesan, Saran & Keluhan</h2>
+      <form id="keluhanForm" class="row g-3 justify-content-center">
+        <div class="col-md-8">
+          <textarea class="form-control" id="keluhanInput" rows="3" placeholder="Tulis kesan, saran, atau keluhan Anda..." required></textarea>
+        </div>
+        <div class="col-md-2 d-grid">
+          <button type="submit" class="btn btn-primary">Kirim</button>
+        </div>
+      </form>
+      <div id="successMsg" class="text-success text-center mt-3" style="display:none;">Terima kasih atas masukannya!</div>
+    </section>
+	<hr />
+	<button class="btn btn-success w-100" onclick="window.location.href='requestmenu.html'">Klik Untuk Request Menu</button>
+	<hr />
+  </div>
+
+  <!-- Modal preview (shared) -->
+  <div class="modal fade" id="previewModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content bg-dark">
+        <div class="modal-body text-center p-3">
+          <img id="previewImage" src="" class="img-fluid rounded" alt="Preview">
+          <div id="previewCaption" class="caption-small text-white mt-3"></div>
+        </div>
+        <div class="modal-footer border-0 justify-content-center">
+          <button class="btn btn-light" data-bs-dismiss="modal">Tutup</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+      const menuData = JSON.parse(localStorage.getItem('menuData')) || [];
+    const menuHariIni = document.getElementById('menuHariIni');
+
+    if(!menuData.length){
+      menuHariIni.innerHTML = `<p class="text-muted text-center">Belum ada menu hari ini.</p>`;
+    } else {
+      const today = new Date().toISOString().split('T')[0];
+      const todayMenu = menuData.find(m => m.tanggal === today) || menuData[0];
+      const waktu = todayMenu.waktu || "Tidak Ditentukan"; // ambil waktu makan
+
+      // Tentukan ikon dan warna berdasarkan waktu makan
+      let icon = '<i class="fas fa-sun"></i>', label = 'Pagi';
+      if(waktu.toLowerCase() === 'siang') { icon = '<i class="fas fa-cloud-sun"></i>'; label = 'Siang'; }
+      else if(waktu.toLowerCase() === 'malam') { icon = '<i class="fas fa-moon"></i>'; label = 'Malam'; }
+
+      menuHariIni.innerHTML = `
+        <div class="text-center mb-3">
+          <span class="meal-time">${icon} ${label}</span>
+        </div>
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item"><strong>Jenis Nasi:</strong> ${todayMenu.nasi}</li>
+          <li class="list-group-item"><strong>Lauk:</strong> ${todayMenu.lauk}</li>
+          <li class="list-group-item"><strong>Lauk Tambahan:</strong> ${todayMenu.laukTambahan}</li>
+          <li class="list-group-item"><strong>Sayur:</strong> ${todayMenu.sayur}</li>
+        </ul>
+        <div class="mt-3 text-center text-muted small">
+          <i class="far fa-calendar-alt"></i> Tanggal: ${todayMenu.tanggal}
+        </div>
+      `;
+    }
+  
+    // read from localStorage
+    const fotoMenuData = JSON.parse(localStorage.getItem('fotoMenuData')) || []; // {foto,keterangan}
+    const fotoKegiatanData = JSON.parse(localStorage.getItem('fotoKegiatanData')) || [];
+    const sertifikatData = JSON.parse(localStorage.getItem('sertifikatData')) || [];
+    const anggotaData = JSON.parse(localStorage.getItem('anggotaData')) || [];
+    const waitressData = JSON.parse(localStorage.getItem('waitressData')) || [];
+
+    // helper build carousel markup with caption below image (centered)
+    function buildCarousel(id, array){
+      if(!array || !array.length) return '<p class="text-muted text-center">Belum ada foto.</p>';
+      const indicators = array.map((_,i)=>`<button type="button" data-bs-target="#${id}" data-bs-slide-to="${i}" ${i===0?'class="active" aria-current="true"':''} aria-label="Slide ${i+1}"></button>`).join('');
+      const slides = array.map((it,i)=>`<div class="carousel-item ${i===0?'active':''}">
+        <img src="${it.foto}" class="d-block w-100 gallery-img" alt="Slide ${i+1}" onclick="showPreview('${it.foto}', ${JSON.stringify(escapeForJs(it.keterangan||''))})">
+        <div class="caption-small text-center">${escapeHtml(it.keterangan||'')}</div>
+      </div>`).join('');
+      return `<div id="${id}" class="carousel slide" data-bs-ride="carousel" data-bs-interval="5000">
+        <div class="carousel-indicators">${indicators}</div>
+        <div class="carousel-inner">${slides}</div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#${id}" data-bs-slide="prev"><span class="carousel-control-prev-icon"></span><span class="visually-hidden">Previous</span></button>
+        <button class="carousel-control-next" type="button" data-bs-target="#${id}" data-bs-slide="next"><span class="carousel-control-next-icon"></span><span class="visually-hidden">Next</span></button>
+      </div>`;
+    }
+
+    // render foto menu carousel
+    document.getElementById('fotoMenuCarouselContainer').innerHTML = buildCarousel('fotoMenuCarousel', fotoMenuData);
+
+    // render foto kegiatan carousel
+    document.getElementById('kegiatanCarouselContainer').innerHTML = buildCarousel('kegiatanCarousel', fotoKegiatanData);
+
+    // render sertifikat carousel
+    document.getElementById('sertifikatCarouselContainer').innerHTML = buildCarousel('sertifikatCarousel', sertifikatData);
+
+    // anggota
+    const anggotaList = document.getElementById('anggotaList');
+    anggotaList.innerHTML = anggotaData && anggotaData.length ? anggotaData.map(a=>`<div class="col-md-3 text-center mb-4"><img src="${a.foto}" class="rounded-img"><h5>${a.nama}</h5><p class="text-muted">${a.jabatan}</p></div>`).join('') : '<p class="text-muted text-center">Belum ada anggota dapur.</p>';
+
+    // waitress
+    const waitressList = document.getElementById('waitressList');
+    waitressList.innerHTML = waitressData && waitressData.length ? waitressData.map(w=>`<div class="col-md-3 text-center mb-4"><img src="${w.foto || 'https://via.placeholder.com/160x120?text=No+Image'}" class="rounded-img"><h5>${w.nama}</h5></div>`).join('') : '<p class="text-muted text-center">Belum ada waitress.</p>';
+
+    // preview modal
+    function showPreview(src, rawCaption){
+      document.getElementById('previewImage').src = src;
+      const capEl = document.getElementById('previewCaption');
+      capEl.textContent = unescapeFromJs(rawCaption || '');
+      const modal = new bootstrap.Modal(document.getElementById('previewModal'));
+      modal.show();
+    }
+    window.showPreview = showPreview;
+
+    // keluhan form
+    document.getElementById('keluhanForm').addEventListener('submit', e=>{
+      e.preventDefault();
+      const v = document.getElementById('keluhanInput').value.trim();
+      if(!v) return;
+      let list = JSON.parse(localStorage.getItem('keluhanList')) || [];
+      list.push({ text: v, tanggal: new Date().toLocaleString() });
+      localStorage.setItem('keluhanList', JSON.stringify(list));
+      document.getElementById('keluhanInput').value = '';
+      const msg = document.getElementById('successMsg'); msg.style.display='block'; setTimeout(()=>msg.style.display='none',3000);
+    });
+
+    // helpers for safe injection
+    function escapeHtml(s){ if(!s) return ''; return s.replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;'); }
+    function escapeForJs(s){ if(!s) return ''; return s.replaceAll('\\','\\\\').replaceAll("'", "\\'").replaceAll('"', '\\"').replaceAll('\n','\\n').replaceAll('\r',''); }
+    function unescapeFromJs(s){ if(!s) return ''; return s.replaceAll('\\n','\n'); }
+
+  </script>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
